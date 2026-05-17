@@ -298,15 +298,16 @@
       <url>https://www.apache.org/licenses/LICENSE-2.0</url>
     </license>
   </licenses>
+
+
   <distributionManagement>
     <repository>
-        <id>nexus</id>
+        <id>nexus-releases</id>
         <name>Nexus Releases</name>
         <url>http://localhost:8081/repository/maven-releases/</url>
     </repository>
-
     <snapshotRepository>
-        <id>nexus</id>
+        <id>nexus-snapshots</id>
         <name>Nexus Snapshots</name>
         <url>http://localhost:8081/repository/maven-snapshots/</url>
     </snapshotRepository>
