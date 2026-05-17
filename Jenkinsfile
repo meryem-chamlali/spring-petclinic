@@ -6,6 +6,10 @@ pipeline {
         jdk 'jdk1.8.0_151'
     }
 
+    environment {
+        MAVEN_OPTS = '-Dmaven.test.failure.ignore=false'
+    }
+
     stages {
 
         stage('Checkout SCM') {
@@ -44,10 +48,40 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Rapport Web Maven Site') {
+            steps {
+                bat 'mvn site'
+            }
+        }
+
+        stage('Packaging') {
             steps {
                 bat 'mvn package'
             }
+        }
+
+        stage('Déploiement Nexus') {
+            steps {
+                bat 'mvn deploy'
+            }
+        }
+    }
+
+    post {
+
+        success {
+            echo 'Build réussi'
+        }
+
+        failure {
+            mail to: 'meryemchamlali7@gmail.com',
+            subject: 'ECHEC DU BUILD JENKINS',
+            body: '''
+Le pipeline Jenkins a échoué.
+
+Projet : petclinic-pipeline
+Consultez Jenkins pour voir l'erreur.
+'''
         }
     }
 }
