@@ -68,19 +68,19 @@ pipeline {
     }
 
     post {
-
         success {
             echo 'Build réussi'
+            mail to: 'meryemchamlali7@gmail.com',
+                 subject: 'BUILD JENKINS REUSSI',
+                 body: 'Le pipeline a réussi !'
         }
-
         failure {
             mail to: 'meryemchamlali7@gmail.com',
-            subject: 'ECHEC DU BUILD JENKINS',
-            body: '''
+                 subject: 'ECHEC DU BUILD JENKINS',
+                 body: '''
 Le pipeline Jenkins a échoué.
-
 Projet : petclinic-pipeline
-Consultez Jenkins pour voir l'erreur.
+Consultez Jenkins pour voir l erreur.
 '''
         }
     }
