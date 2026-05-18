@@ -30,12 +30,17 @@ pipeline {
         }
         stage('Analyse du code') {
             steps {
-                bat 'mvn checkstyle:checkstyle'
+                bat 'mvn checkstyle:check'
             }
         }
         stage('Couverture de code') {
             steps {
                 bat 'mvn jacoco:report'
+            }
+            post {
+                always {
+                    jacoco execPattern: 'target/jacoco.exec'
+                }
             }
         }
         stage('JavaDoc') {
@@ -45,32 +50,32 @@ pipeline {
         }
         stage('Rapport Web Maven Site') {
             steps {
-                bat 'mvn site'
+                bat 'mvn site -DskipTests'
             }
         }
         stage('Packaging') {
             steps {
-                bat 'mvn package'
+                bat 'mvn package -DskipTests'
             }
         }
-        stage('Déploiement Nexus') {
+        stage('Deploiement Nexus') {
             steps {
-                bat 'mvn deploy'
+                bat 'mvn deploy -DskipTests'
             }
         }
     }
     post {
         success {
-            echo 'Build réussi'
+            echo 'Build reussi'
             mail to: 'meryemchamlali7@gmail.com',
                  subject: 'BUILD JENKINS REUSSI',
-                 body: 'Le pipeline a réussi !'
+                 body: 'Le pipeline a reussi !'
         }
         failure {
             mail to: 'meryemchamlali7@gmail.com',
                  subject: 'ECHEC DU BUILD JENKINS',
                  body: '''
-Le pipeline Jenkins a échoué.
+Le pipeline Jenkins a echoue.
 Projet : petclinic-pipeline
 Consultez Jenkins pour voir l erreur.
 '''
