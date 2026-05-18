@@ -30,17 +30,12 @@ pipeline {
         }
         stage('Analyse du code') {
             steps {
-                bat 'mvn checkstyle:check'
+                bat 'mvn checkstyle:checkstyle'
             }
         }
         stage('Couverture de code') {
             steps {
                 bat 'mvn jacoco:report'
-            }
-            post {
-                always {
-                    jacoco execPattern: 'target/jacoco.exec'
-                }
             }
         }
         stage('JavaDoc') {
@@ -74,11 +69,9 @@ pipeline {
         failure {
             mail to: 'meryemchamlali7@gmail.com',
                  subject: 'ECHEC DU BUILD JENKINS',
-                 body: '''
-Le pipeline Jenkins a echoue.
+                 body: '''Le pipeline Jenkins a echoue.
 Projet : petclinic-pipeline
-Consultez Jenkins pour voir l erreur.
-'''
+Consultez Jenkins pour voir l erreur.'''
         }
     }
 }
